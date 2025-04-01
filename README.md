@@ -62,8 +62,6 @@ Defines the main model `ClipModel` which includes:
 - Initializes optimizer, learning scheduler, loss
 - Performs training, validation, checkpoint saving
 
-> 📌 **Note**: You do not need to manually run `train.py` — training is triggered programmatically from the notebook or another script that orchestrates evaluation and model analysis (as per the paper).
-
 ---
 
 ## 📊 Evaluation & Decoding
