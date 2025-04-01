@@ -76,7 +76,7 @@ Defines the main model `ClipModel` which includes:
 
 ---
 
-## 🧪 Implementation Details (from paper)
+## 🧪 Implementation Details
 - Uses CLIP (ViT-B/32) for image features and GPT-2 for text
 - Dual Attention with XGLA + Logit-based CAM
 - BiLSTM + XGLA form the CPM before decoding
