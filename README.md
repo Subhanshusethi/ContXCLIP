@@ -1,12 +1,98 @@
-# CONXCLIP: A Novel Image Captioning Method
+# ContXCLIP
 
-CONXCLIP is a novel image captioning method that leverages the capabilities of CLIP and GPT-2, incorporating feature enhancement techniques. This method introduces a **novel attention mechanism** designed to maintain coherence in long sequences, ensuring that context is preserved throughout the generated captions.
+This repository contains the implementation of **ContXCLIP**, a lightweight image captioning model leveraging a dual attention mechanism and a context preservation module (CPM). It builds upon CLIP and GPT-2 to enhance visual-textual alignment and contextual richness in generated captions.
 
-## Features:
-- **CLIP Integration**: Utilizes CLIP for powerful visual feature extraction, linking images to textual representations.
-- **GPT-2 Integration**: Leverages GPT-2 for natural language generation, enabling high-quality captioning.
-- **Feature Enhancement Techniques**: Implements various techniques to improve the quality and relevance of generated captions.
-- **Novel Attention Mechanism**: Introduces a custom attention mechanism to maintain coherence in long sequences and ensure contextual consistency throughout the captions.
+Paper: [ContXCLIP: Contextual Attention for Vision-Language Understanding](https://github.com/Subhanshusethi/ContXCLIP)
 
+---
 
-#NOTE: All code blocks in diffrent py files will be soon included in more structred format
+## 📁 Project Structure
+
+```
+├── config.py         # Global configuration for model and training
+├── dataset.py        # ClipCocoDataset class for loading and preprocessing data
+├── data_split.py     # Splits dataset into train/test using random_split
+├── model.py          # Custom activation functions (e.g., ReluSIG)
+├── utils.py          # Attention modules, projection layers, utilities
+├── main.py           # Defines the full ClipModel, evaluation, and inference logic
+├── train.py          # Runs the training loop (used internally)
+```
+
+---
+
+## 📄 File Responsibilities
+
+### `config.py`
+Defines the configuration class `CFG`:
+- Learning rates, batch size, device
+- Model architecture parameters (projection dims, transformer layers)
+- Paths to pretrained GPT-2 or CLIP models
+
+### `dataset.py`
+Implements `ClipCocoDataset`, which:
+- Loads pickled CLIP features and captions
+- Tokenizes captions using GPT-2 tokenizer
+- Applies stopword filtering, padding, and mask generation
+- Returns tokenized caption, mask, and visual prefix for training
+
+### `data_split.py`
+- Instantiates the `ClipCocoDataset`
+- Splits it into train/test subsets using `torch.utils.data.random_split`
+- Helps create `train_data`, `test_data` datasets
+
+### `utils.py`
+Contains modular components used inside the main model:
+- `ImageProjection`, `TextProjection`, `XGLAttentionSeq`, `EFFN`, `MLP`
+- Utilities for averaging losses, plotting, etc.
+
+### `model.py`
+Contains non-standard activation like `ReluSIG`, optionally used in attention and projection layers.
+
+### `main.py`
+Defines the main model `ClipModel` which includes:
+- Visual encoder interface with CLIP embedding
+- Text encoder/decoder with GPT-2
+- Dual Attention mechanism: XGLAttention + CAM
+- Context Preservation Module (CPM) with BiLSTM + XGLA
+- Evaluation logic including BLEU, CIDEr computation, inference, and visualization
+
+### `train.py`
+- Entry point for training (used as backend script)
+- Imports dataset, model, and utils
+- Initializes optimizer, learning scheduler, loss
+- Performs training, validation, checkpoint saving
+
+> 📌 **Note**: You do not need to manually run `train.py` — training is triggered programmatically from the notebook or another script that orchestrates evaluation and model analysis (as per the paper).
+
+---
+
+## 📊 Evaluation & Decoding
+- Implements Top-k and Top-nσ decoding strategies to avoid repetition
+- Evaluation done via BLEU, METEOR, SPICE, CIDEr
+
+---
+
+## 📦 Dataset
+- MS COCO (Karpathy Split)
+- Data must be preprocessed using CLIP and saved as `.pkl` with fields `clip_embedding` and `captions`
+
+---
+
+## 🧪 Implementation Details (from paper)
+- Uses CLIP (ViT-B/32) for image features and GPT-2 for text
+- Dual Attention with XGLA + Logit-based CAM
+- BiLSTM + XGLA form the CPM before decoding
+- Trained with AdamW + ReduceLROnPlateau
+
+---
+
+## 🧠 Citation
+If you use this codebase, please consider citing:
+
+```bibtex
+@article{ContXCLIP2024,
+  title={ContXCLIP: Contextual Attention for Vision-Language Understanding},
+  author={Subhanshu Sethi, Chhavi Dhiman},
+  year={2024}
+}
+```
