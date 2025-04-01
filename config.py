@@ -1,0 +1,37 @@
+class CFG:
+    debug = False
+    batch_size = 10
+    num_workers = 0
+    head_lr = 1e-4#4e-3
+    image_encoder_lr = 1e-4
+    text_encoder_lr = 1e-5
+    text_decoder_lr = 1e-5
+    weight_decay = 0.02
+    patience = 1
+    factor = 0.4
+    epochs = 10
+    model_name = 'resnet101'
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    image_embedding = 512
+    # text_encoder_model = "/kaggle/input/gpt-finetuned-mscoco"
+    text_encoder_model = "/kaggle/input/gpt-finetuned-final-ver"
+    # text_encoder_model = "meta-llama/Llama-2-7b-hf"
+    text_embedding = 768
+    clipmodel = "openai/clip-vit-base-patch32"
+    max_length = 25
+    pretrained = True
+    trainable = True
+    temperature = 1
+    size =244
+    num_projection_layers = 2
+    projection_dim = 256
+    dropout = 0.2
+    ep_len =10
+    num_layers=4
+    embed_size=768
+    n_heads= 16#metrpchangeS
+    forward_expansion=2
+    activation ="relu"
+    text_decoder = "/kaggle/input/gpt-finetuned-final-ver"
+    # text_decodr = "meta-llama/Llama-2-7b-hf"
+
